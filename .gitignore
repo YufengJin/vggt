@@ -147,3 +147,10 @@ skyseg.onnx
 # pixi environments
 .pixi
 *.egg-info
+
+# IDE
+.vscode/
+
+# test
+.gradio/
+input_*/

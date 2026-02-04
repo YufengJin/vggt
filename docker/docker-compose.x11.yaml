@@ -1,0 +1,26 @@
+services:
+  vggt:
+    container_name: vggt-container
+    image: ${IMAGE:-vggt:latest}
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        CUDA_VERSION: ${CUDA_VERSION:-12.1.0}
+        PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
+        ENV_NAME: ${ENV_NAME:-py310}
+        TORCH_INDEX_URL: ${TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu121}
+    network_mode: host
+    tty: true
+    stdin_open: true
+    gpus: all
+    environment:
+      DISPLAY: ${DISPLAY}
+      XAUTHORITY: ${XAUTHORITY}
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility,graphics
+    volumes:
+      - ..:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY}:${XAUTHORITY}:ro
+    working_dir: /workspace
